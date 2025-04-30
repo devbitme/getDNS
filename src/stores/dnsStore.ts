@@ -28,6 +28,12 @@ export const dnsResponse = writable<DNSResponse>({
 
 // Function to fetch DNS records
 export async function fetchDNSRecord(domain: string, type: string) {
+
+    if (!domain || !type) {
+        dnsResponse.set({ status: 'error', data: null, message: 'Domain and type are required' });
+        return;
+    }
+    
     // Check cache first
     const cacheKey = `${domain}-${type}`;
     if (cache.has(cacheKey)) {
