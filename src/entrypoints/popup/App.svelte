@@ -54,28 +54,32 @@
 	});
 </script>
 
-<main class="flex max-w-min flex-col p-4 text-[.8rem] select-none">
-	<h1 class="sr-only">Get DNS</h1>
+<main class="relative flex h-96 max-w-min flex-col p-4 text-[.8rem] select-none">
+	<section class="header">
+		<h1 class="sr-only">Get DNS</h1>
 
-	<div class="text-center text-xl text-green-800 select-none">°˖✧◝(⁰▿⁰)◜✧˖°</div>
+		<div class="text-center text-xl text-green-800 select-none">°˖✧◝(⁰▿⁰)◜✧˖°</div>
 
-	<h2 class="my-2 text-center font-bold">{$currentDomain}</h2>
+		<h2 class="my-2 text-center font-bold">{$currentDomain}</h2>
+	</section>
 
-	{#each tabIds as id}
-		<div {...tabs.getContent(id)} class="flex flex-col gap-4 border-b-2 border-green-800 py-4">
-			{#if $dnsResponse.status === "loading" && $currentRecordType === id}
-				<div class="text-center">Loading...</div>
-			{:else if $dnsResponse.status === "error" && $currentRecordType === id}
-				<div class="text-red-800">{$dnsResponse.message || "Record not found!"}</div>
-			{:else if $dnsResponse.status === "success" && $currentRecordType === id && $dnsResponse.data}
-				{#each $dnsResponse.data as record}
-					<DNSRecord TTL={record.TTL} data={record.data} />
-				{/each}
-			{/if}
-		</div>
-	{/each}
+	<section class="content max-h-min flex-1 overflow-y-auto">
+		{#each tabIds as id}
+			<div {...tabs.getContent(id)} class="flex flex-col gap-4">
+				{#if $dnsResponse.status === "loading" && $currentRecordType === id}
+					<div class="text-center">Loading...</div>
+				{:else if $dnsResponse.status === "error" && $currentRecordType === id}
+					<div class="text-red-800">{$dnsResponse.message || "Record not found!"}</div>
+				{:else if $dnsResponse.status === "success" && $currentRecordType === id && $dnsResponse.data}
+					{#each $dnsResponse.data as record}
+						<DNSRecord TTL={record.TTL} data={record.data} />
+					{/each}
+				{/if}
+			</div>
+		{/each}
+	</section>
 
-	<div id="nav-dns" {...tabs.triggerList} class="mt-2 mb-4 flex gap-2">
+	<section id="nav-dns" {...tabs.triggerList} class="footer mt-2 mb-4 flex gap-2 border-t-2 border-green-800 py-4">
 		{#each tabIds as id}
 			<button
 				{...tabs.getTrigger(id)}
@@ -84,7 +88,7 @@
 				{id}
 			</button>
 		{/each}
-	</div>
+	</section>
 
 	<div class="absolute right-4 bottom-1 flex items-center gap-1 text-[.6rem] text-green-700 select-none">
 		<a
@@ -102,7 +106,7 @@
 				href="https://github.com/devbitme/getDNS/releases"
 				target="_blank"
 				rel="noopener noreferrer"
-				title="Releases">1.0.1</a
+				title="Releases">1.0.2</a
 			>
 		</div>
 	</div>
